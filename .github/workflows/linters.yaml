@@ -9,5 +9,20 @@ jobs:
     runs-on: ubuntu-latest
     name: GitLint
     steps:
-      - name: Lint commits, branches, and pull requests
-        uses: aschbacd/gitlint-action@v1.1.0
+      - uses: actions/checkout@v2
+        with:
+          # Check out at the last commit (pre-automated merge, we don't care about the temporary commit for linting)
+          ref: ${{ github.event.pull_request.head.sha }}
+          # Get all history
+          fetch-depth: 0
+      
+      - name: Install gitlint
+        shell: bash
+        run: |
+          python -m pip install gitlint
+        
+      - name: Run gitlint file
+        shell: bash
+        run: |
+          # Lint everything from base to the latest
+          gitlint --commits "${{ github.event.pull_request.base.sha }} ..HEAD"
