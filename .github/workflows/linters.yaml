@@ -25,4 +25,4 @@ jobs:
         shell: bash
         run: |
           # Lint everything from base to the latest
-          gitlint --commits "${{ github.event.pull_request.base.sha }} ..HEAD"
+          gitlint --commits "${{ github.event.pull_request.base.sha }}..HEAD"
